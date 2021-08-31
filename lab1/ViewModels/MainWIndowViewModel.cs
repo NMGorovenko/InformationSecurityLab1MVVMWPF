@@ -11,48 +11,49 @@ namespace lab1.ViewModels
     class MainWIndowViewModel : INotifyPropertyChanged
     {
 
-        private Code codeEncrypterDecrypter;
+        private Code _codeEncrypterDecrypter;
 
 
         // Command to append element
-        private RelayCommand encryptCommand;
+        private RelayCommand _encryptCommand;
         public RelayCommand EncryptCommand 
         {
             get
             {
-                return encryptCommand ?? 
-                    (encryptCommand = new RelayCommand(obj =>
+                return _encryptCommand ?? 
+                    (_encryptCommand = new RelayCommand(obj =>
                     {
-                        codeEncrypterDecrypter.Encrypt();
+                        _codeEncrypterDecrypter.Encrypt();
                     }));
             }
         }
-        private RelayCommand decryptCommand;
+        private RelayCommand _decryptCommand;
         public RelayCommand DecryptCommand
         {
             get
             {
-                return decryptCommand ??
-                    (decryptCommand = new RelayCommand(obj =>
+                return _decryptCommand ??
+                    (_decryptCommand = new RelayCommand(obj =>
                     {
-                        codeEncrypterDecrypter.Decrypt();
+                        _codeEncrypterDecrypter.Decrypt();
                     }));
             }
         }
         public Code CodeEncrypterDecrypter
         { 
-            get { return codeEncrypterDecrypter; }
+            get { return _codeEncrypterDecrypter; }
             set
             {
-                codeEncrypterDecrypter = value;
+                _codeEncrypterDecrypter = value;
                 OnPropertyChanged();
             }
         }
 
         public MainWIndowViewModel()
         {
-            this.codeEncrypterDecrypter = new Code();
+            this._codeEncrypterDecrypter = new Code();
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
