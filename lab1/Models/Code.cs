@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,11 +14,12 @@ namespace lab1.Models
 
         private string _inputString;
         private string _outputString;
+        private string _key;
 
         public Code()
         {
-            this._inputString = "";
-            this._outputString = "";
+            _inputString = "";
+            _outputString = "";
         }
 
         public string InputString
@@ -25,7 +27,7 @@ namespace lab1.Models
             get { return _inputString; }
             set
             {
-                _inputString = value;
+                _inputString = value.ToLower();
                 OnPropertyChanged();
             }
         }
@@ -35,36 +37,57 @@ namespace lab1.Models
             get { return _outputString; }
             set
             {
-                _outputString = value;
+                _outputString = value.ToLower();
+                OnPropertyChanged();
+            }
+        }
+        
+        public string Key
+        {
+            get
+            {
+                return _key;
+            }
+            set
+            {
+                _key = value;
                 OnPropertyChanged();
             }
         }
 
-        /// <summary>
-        /// Алгоритм шифрования
-        /// </summary>
-        public void Encrypt()
+        
+        public virtual void Encrypt()
         {
             OutputString = InputString + "  \nEncrypted";
-            Task.Factory.StartNew(() =>
-            {
-                while (true)
-                {
-                    Random rand = new Random();
-                    int num = rand.Next();
-                    Task.Delay(100).Wait();
-                    OutputString = num.ToString();
-                    num++;
-                }
-            });
+            
         }
 
-        /// <summary>
-        /// Алгоритм дешифрования
-        /// </summary>
-        public void Decrypt()
+        
+        public virtual void Decrypt()
         {
             InputString = "Нас раскодировали";
+        }
+
+        public void SwapAndCleanOutputString()
+        {
+            string temp = new string(InputString);
+            InputString = new string(OutputString);
+            OutputString = "";
+        }
+
+        public async void ReadFromFile(string path)
+        {
+            try
+            {
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    InputString = await sr.ReadToEndAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

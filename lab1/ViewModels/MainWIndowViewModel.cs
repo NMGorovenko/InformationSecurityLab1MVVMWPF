@@ -5,6 +5,8 @@ using System.Text;
 using lab1.Models;
 using lab1.Commands;
 using System.Runtime.CompilerServices;
+using Microsoft.Win32;
+using System.IO;
 
 namespace lab1.ViewModels
 {
@@ -39,6 +41,33 @@ namespace lab1.ViewModels
                     }));
             }
         }
+
+        private RelayCommand _swapAndCleanOutputCommand;
+        public RelayCommand SwapAndCleanOutputString
+        {
+            get
+            {
+                return _swapAndCleanOutputCommand ??
+                       (_swapAndCleanOutputCommand = new RelayCommand(obj =>
+                       {
+                           _codeEncrypterDecrypter.SwapAndCleanOutputString();
+                       }));
+            }
+        }
+
+        private RelayCommand _openFileInput;
+        public RelayCommand OpenFileInput
+        {
+            get
+            {
+                return _openFileInput ??
+                       (_openFileInput = new RelayCommand(obj =>
+                       {
+                           string fileLocation = GetPath();
+                           CodeEncrypterDecrypter.ReadFromFile(fileLocation);
+                       }));
+            }
+        }
         public Code CodeEncrypterDecrypter
         { 
             get { return _codeEncrypterDecrypter; }
@@ -49,9 +78,19 @@ namespace lab1.ViewModels
             }
         }
 
+        public string GetPath()
+        {
+            var dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() == true)
+            {
+                return dialog.FileName;
+            }
+            return null;
+        }
+
         public MainWIndowViewModel()
         {
-            this._codeEncrypterDecrypter = new Code();
+            this._codeEncrypterDecrypter = new VigenerCode();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

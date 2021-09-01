@@ -12,9 +12,33 @@
         <vm:MainWIndowViewModel />
     </Window.DataContext>
     <Window.Resources>
-        
+        <Style x:Key="MyWaterMarkStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <Border Background="White" BorderBrush="#FF7D8683" BorderThickness="1"/>
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="5,0,0,0" VerticalAlignment="Center" />
+                            <Label Margin="5,0,0,0" x:Name="WaterMarkLabel" Content="{TemplateBinding Tag}" VerticalAlignment="Center"
+                                   Visibility="Collapsed" Foreground="Gray" FontFamily="Arial"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Text" Value=""/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Visibility" TargetName="WaterMarkLabel" Value="Visible"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="DimGray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
-    
+
     <Grid ShowGridLines="False">
         
         <Grid.ColumnDefinitions>
@@ -28,6 +52,9 @@
             <StackPanel Background="Gray">
                 <Button x:Name="ButtonEncrypt" Grid.Row="0"  Content="Encrypt" Command="{Binding EncryptCommand}"/>
                 <Button x:Name="ButtonDecrypt" Grid.Row="1"  Content="Decrypt" Command="{Binding DecryptCommand}"/>
+                <Button x:Name="ButtonSwap" Grid.Row="1"  Content="SWAP" Command="{Binding SwapAndCleanOutputString}"/>
+                <Button x:Name="ButtonOpenFileInput" Grid.Row="1"  Content="OpenFileInput" Command="{Binding OpenFileInput}"/>
+                <TextBox x:Name="TextBoxKey" Text="{Binding CodeEncrypterDecrypter.Key}" Style="{StaticResource MyWaterMarkStyle}" Tag="Key" Height="30"/>
             </StackPanel>
             
             
