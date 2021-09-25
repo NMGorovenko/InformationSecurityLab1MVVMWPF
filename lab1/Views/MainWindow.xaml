@@ -51,7 +51,9 @@
             
             <StackPanel Background="Gray">
                 <Button x:Name="ButtonEncrypt" Grid.Row="0"  Content="Encrypt" Command="{Binding EncryptCommand}"/>
+                <Button x:Name="ButtonEncryptImprove" Grid.Row="0"  Content="EncryptImprove" Command="{Binding EncryptImproveCommand}"/>
                 <Button x:Name="ButtonDecrypt" Grid.Row="1"  Content="Decrypt" Command="{Binding DecryptCommand}"/>
+                <Button x:Name="ButtonDecryptImprove" Grid.Row="1"  Content="DecryptImprove" Command="{Binding DecryptImproveCommand}"/>
                 <Button x:Name="ButtonSwap" Grid.Row="1"  Content="SWAP" Command="{Binding SwapAndCleanOutputString}"/>
                 <Button x:Name="ButtonOpenFileInput" Grid.Row="1"  Content="OpenFileInput" Command="{Binding OpenFileInput}"/>
                 <TextBox x:Name="TextBoxKey" Text="{Binding CodeEncrypterDecrypter.Key}" Style="{StaticResource MyWaterMarkStyle}" Tag="Key" Height="30"/>

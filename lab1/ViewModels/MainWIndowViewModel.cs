@@ -29,6 +29,19 @@ namespace lab1.ViewModels
                     }));
             }
         }
+
+        private RelayCommand _encryptImproveCommand;
+        public RelayCommand EncryptImproveCommand
+        {
+            get
+            {
+                return _encryptImproveCommand ??
+                       (_encryptImproveCommand = new RelayCommand(obj =>
+                       {
+                           _codeEncrypterDecrypter.EncryptImprove();
+                       }));
+            }
+        }
         private RelayCommand _decryptCommand;
         public RelayCommand DecryptCommand
         {
@@ -42,6 +55,18 @@ namespace lab1.ViewModels
             }
         }
 
+        private RelayCommand _decryptImproveCommand;
+        public RelayCommand DecryptImproveCommand
+        {
+            get
+            {
+                return _decryptImproveCommand ??
+                       (_decryptImproveCommand = new RelayCommand(obj =>
+                       {
+                           _codeEncrypterDecrypter.DecryptImprove();
+                       }));
+            }
+        }
         private RelayCommand _swapAndCleanOutputCommand;
         public RelayCommand SwapAndCleanOutputString
         {

@@ -15,7 +15,7 @@ namespace lab1.Models
         private string _inputString;
         private string _outputString;
         private string _key;
-
+        
         public Code()
         {
             _inputString = "";
@@ -62,8 +62,16 @@ namespace lab1.Models
             
         }
 
-        
+        public virtual void EncryptImprove()
+        {
+            OutputString = InputString + "  \nEncrypted";
+
+        }
         public virtual void Decrypt()
+        {
+            InputString = "Нас раскодировали";
+        }
+        public virtual void DecryptImprove()
         {
             InputString = "Нас раскодировали";
         }

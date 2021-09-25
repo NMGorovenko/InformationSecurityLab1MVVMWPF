@@ -1,11 +1,13 @@
-﻿namespace lab1.Models
+﻿using System;
+
+namespace lab1.Models
 {
     /// <summary>
     /// Шифр Вижинера
     /// </summary>
     internal class VigenerCode : Code
     {
-        private const string _alphabetEn = "abcdefghijklmnopqrstuvwxyz ";
+        private const string _alphabet = "abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя  .,'`!#№$~0123456789";
         private string _words;
 
 
@@ -15,18 +17,53 @@
             string result = "";
 
             // шифрование
-            if (!string.IsNullOrEmpty(Key))
+            try
             {
-                for (int i = 0; i < _words.Length; i++)
+                if (!string.IsNullOrEmpty(Key))
                 {
-                    var index = _alphabetEn.IndexOf(_words[i]) + _alphabetEn.IndexOf(Key[i % Key.Length]);
-                    index %= _alphabetEn.Length;
-                    result += _alphabetEn[index];
+                    for (int i = 0; i < _words.Length; i++)
+                    {
+                        var index = _alphabet.IndexOf(_words[i]) + _alphabet.IndexOf(Key[i % Key.Length]);
+                        index += _alphabet.Length;
+                        index %= _alphabet.Length;
+                        result += _alphabet[index];
+                    }
                 }
+                OutputString = result;
             }
-            
+            catch (IndexOutOfRangeException exception)
+            {
+                OutputString = "Ошибка шифрования";
+            }
+        }
 
-            OutputString = result;
+        // усовершенствованный алгоритм шифрования
+        public override void EncryptImprove()
+        {
+            _words = new string(InputString);
+            string result = "";
+
+            // шифрование
+            try
+            {
+                if (!string.IsNullOrEmpty(Key))
+                {
+                    int shift = 0;
+                    for (int i = 0;  i < _words.Length; i++)
+                    {
+                        var index = _alphabet.IndexOf(_words[i]) + _alphabet.IndexOf(Key[i % Key.Length]) + _alphabet.Length;
+                        index += shift; // делаем сдвиг по индексу
+                        index %= _alphabet.Length;
+                        result += _alphabet[index];
+                        shift++;
+                    }
+                }
+                OutputString = result;
+            }
+            catch (IndexOutOfRangeException exception)
+            {
+                OutputString = "Ошибка шифрования";
+            }
         }
 
         public override void Decrypt()
@@ -34,19 +71,54 @@
             _words = new string(InputString);
             string result = "";
 
-            // дешифрование
-            if (!string.IsNullOrEmpty(Key))
+            try
             {
-                for (int i = 0; i < _words.Length; i++)
+                // дешифрование
+                if (!string.IsNullOrEmpty(Key))
                 {
-                    var index = _alphabetEn.IndexOf(_words[i]) - _alphabetEn.IndexOf(Key[i % Key.Length]) +
-                                _alphabetEn.Length;
-                    index %= _alphabetEn.Length;
-                    result += _alphabetEn[index];
+                    for (int i = 0; i < _words.Length; i++)
+                    {
+                        var index = _alphabet.IndexOf(_words[i]) - _alphabet.IndexOf(Key[i % Key.Length]) + _alphabet.Length;
+                        index %= _alphabet.Length;
+                        result += _alphabet[index];
+                    }
                 }
+                OutputString = result;
             }
 
-            OutputString = result;
+            catch (IndexOutOfRangeException exception)
+            {
+                OutputString = "Ошибка шифрования";
+            }
+        }
+
+        public override void DecryptImprove()
+        {
+            _words = new string(InputString);
+            string result = "";
+
+            try
+            {
+                // дешифрование
+                if (!string.IsNullOrEmpty(Key))
+                {
+                    int shift = 0;
+                    for (int i = 0; i < _words.Length; i++)
+                    {
+                        var index = _alphabet.IndexOf(_words[i]) - _alphabet.IndexOf(Key[i % Key.Length]) + _alphabet.Length;
+                        index -= shift;
+                        index %= _alphabet.Length;
+                        result += _alphabet[index];
+                        shift++;
+                    }
+                }
+                OutputString = result;
+            }
+
+            catch (IndexOutOfRangeException exception)
+            {
+                OutputString = "Ошибка шифрования";
+            }
         }
     }
 }
